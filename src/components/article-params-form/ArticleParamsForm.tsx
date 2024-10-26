@@ -16,6 +16,8 @@ export const ArticleParamsForm = () => {
 	return (
 		<>
 			<ArrowButton isOpen={isOpen} onClick={handleToggle} />
+			{isOpen && <div className={styles.overlay} onClick={handleToggle} />}{' '}
+			{/* затемнение фона при открытии */}
 			<aside
 				className={clsx(styles.container, {
 					[styles.container_open]: isOpen,
