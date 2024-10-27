@@ -18,12 +18,21 @@ import {
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
 
+export interface FormState {
+	fontFamilyOption: OptionType | null;
+	fontColor: OptionType | null;
+	backgroundColor: OptionType | null;
+	contentWidth: OptionType | null;
+	fontSizeOption: OptionType;
+}
+
 interface ArticleParamsFormProps {
-	onApply: (formState: any) => void;
+	onApply: (formState: FormState) => void;
 }
 
 export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false); // добавлено состояние с помощью хука
+	const [isMenuOpen, setIsMenuOpen] = useState(false); // добавлено состояние с помощью хука
+
 	const [selectedFontFamily, setSelectedFontFamily] =
 		useState<OptionType | null>(defaultArticleState.fontFamilyOption);
 	const [selectedFontColors, setSelectedFontColors] =
@@ -38,7 +47,7 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 
 	// Обавлен обработчик для переключения состояния
 	const handleToggle = () => {
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	};
 
 	// Добавляем обработчик handleSubmit для события onSubmit формы
@@ -54,7 +63,8 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 			contentWidth: selectedContentWidthArr,
 			backgroundColor: selectedBackgroundColors,
 		});
-		setIsOpen(false);
+
+		setIsMenuOpen(false); // Закрываем форму после применения стилей
 	};
 
 	// Добавляем обработчик handleReset для события onReset формы
@@ -64,16 +74,28 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 		setSelectedFontColors(defaultArticleState.fontColor);
 		setSelectedContentWidthArr(defaultArticleState.contentWidth);
 		setSelectedBackgroundColors(defaultArticleState.backgroundColor);
+
+		onApply({
+			fontFamilyOption: defaultArticleState.fontFamilyOption,
+			fontSizeOption: defaultArticleState.fontSizeOption,
+			fontColor: defaultArticleState.fontColor,
+			contentWidth: defaultArticleState.contentWidth,
+			backgroundColor: defaultArticleState.backgroundColor,
+		});
+
+		setIsMenuOpen(false); // Закрываем форму после сброса
 	};
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={handleToggle} />
-			{isOpen && <div className={styles.overlay} onClick={handleToggle} />}{' '}
+			<ArrowButton isOpen={isMenuOpen} onClick={handleToggle} />
+			{isMenuOpen && (
+				<div className={styles.overlay} onClick={handleToggle} />
+			)}{' '}
 			{/* затемнение фона при открытии */}
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isMenuOpen,
 				})}>
 				<form
 					className={styles.form}

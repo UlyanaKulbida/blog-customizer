@@ -3,7 +3,10 @@ import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
-import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
+import {
+	ArticleParamsForm,
+	FormState,
+} from './components/article-params-form/ArticleParamsForm';
 import { defaultArticleState } from './constants/articleProps';
 
 import './styles/index.scss';
@@ -33,12 +36,22 @@ const App = () => {
 
 	//Передаем функцию handleApply компоненту ArticleParamsForm,
 	//которая обновляет состояния при нажатии на «Применить».
-	const handleApply = (formState: any) => {
-		setFontFamilyOption(formState.fontFamilyOption.value);
+	const handleApply = (formState: FormState) => {
+		setFontFamilyOption(
+			formState.fontFamilyOption?.value ??
+				defaultArticleState.fontFamilyOption.value
+		);
 		setFontSizeOption(formState.fontSizeOption.value);
-		setFontColor(formState.fontColor.value);
-		setContentWidth(formState.contentWidth.value);
-		setBackgroundColor(formState.backgroundColor.value);
+		setFontColor(
+			formState.fontColor?.value ?? defaultArticleState.fontColor.value
+		);
+		setContentWidth(
+			formState.contentWidth?.value ?? defaultArticleState.contentWidth.value
+		);
+		setBackgroundColor(
+			formState.backgroundColor?.value ??
+				defaultArticleState.backgroundColor.value
+		);
 	};
 
 	return (
