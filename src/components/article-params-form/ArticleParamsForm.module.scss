@@ -1,6 +1,16 @@
+// полупрозрачный оверлей, который будет закрывать панель при клике на него
+
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1;
+	background: rgb(0 0 0 / 50%);
+}
+
 .container {
 	position: fixed;
 	left: 0;
+	z-index: 2;
 	width: 616px;
 	height: 100%;
 	overflow: scroll;
@@ -16,6 +26,7 @@
 	display: flex;
 	flex-shrink: 0;
 	flex-direction: column;
+	gap: 50px;
 	box-sizing: border-box;
 	width: 616px;
 	height: auto;
